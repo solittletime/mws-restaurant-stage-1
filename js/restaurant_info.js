@@ -73,7 +73,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant, '-270x248.jpg');
-  image.alt = restaurant.name;
+  image.alt = 'Image of ' + restaurant.name + ' restaurant';
 
   const source = document.getElementById('restaurant-src');
   source.media = '(min-width: 600px)';
@@ -115,7 +115,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -137,21 +137,38 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
+
+  const nameBlock = document.createElement('div');
+  nameBlock.setAttribute("id", "reviews-name-block");
+  li.appendChild(nameBlock);
+
+  const ratingBlock = document.createElement('div');
+  ratingBlock.setAttribute("id", "reviews-rating-block");
+  li.appendChild(ratingBlock);
+
+  const commentsBlock = document.createElement('div');
+  commentsBlock.setAttribute("id", "reviews-comments-block");
+  li.appendChild(commentsBlock);
+
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  li.appendChild(name);
+  name.setAttribute("id", "reviews-name");
+  nameBlock.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
   li.appendChild(date);
+  date.setAttribute("id", "reviews-date");
+  nameBlock.appendChild(date);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
+  rating.setAttribute("id", "reviews-rating");
+  ratingBlock.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-  li.appendChild(comments);
+  commentsBlock.appendChild(comments);
 
   return li;
 }
