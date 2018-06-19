@@ -70,10 +70,12 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 
-  const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant, '-270x248.jpg');
-  image.alt = 'Image of ' + restaurant.name + ' restaurant';
+  if (restaurant.photograph) {
+    const image = document.getElementById('restaurant-img');
+    image.className = 'restaurant-img';
+    image.src = DBHelper.imageUrlForRestaurant(restaurant, '-270x248.jpg');
+    image.alt = 'Image of ' + restaurant.name + ' restaurant';
+  }
 
   const source = document.getElementById('restaurant-src');
   source.media = '(min-width: 600px)';
