@@ -338,3 +338,58 @@ nav h1 a {
 #reviews-comments-block {
   padding: 0 20px 0 20px;
 }
+#favorite-this {
+  padding: 5px 10px;
+  background-color: orange;
+  font-size: 12px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+#favorite-this:hover {
+  background-color: red;
+  text-decoration: none;
+}
+#favorite-this:active {
+  background-color: orange;
+}
+#review-form {
+  margin: 0;
+  padding: 0;
+}
+#review-table {
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  min-width: 100%;
+}
+#review-name {
+  min-width: 100%;
+}
+#review-rating {
+  width: 150px;
+}
+#review-comments {
+  min-width: 100%;
+}
+#send-review {
+  padding: 5px 10px;
+  background-color: orange;
+  font-size: 12px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+#send-review:hover {
+  background-color: red;
+  text-decoration: none;
+}
+#send-review:active {
+  background-color: orange;
+}

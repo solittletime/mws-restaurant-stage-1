@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#db5945">
+  <link rel="manifest" href="manifest.json">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
@@ -36,14 +37,39 @@
       <h2 id="restaurant-name"></h2>
       <picture>
         <source id="restaurant-src">
-        <img id="restaurant-img">
+        <img id="restaurant-img" alt="alt text">
       </picture>
       <p id="restaurant-cuisine"></p>
       <p id="restaurant-address"></p>
       <table id="restaurant-hours"></table>
+      <p><a id="favorite-this" alt="Favorite this" onclick="favorite()"></a></p>
     </section>
     <section id="reviews-container">
       <ul id="reviews-list"></ul>
+    </section>
+    <section id="review-form">
+      <div id="review-table" style="display: table;">
+        <br/>
+          <div style="padding: 0 20px 18px 20px;">Name
+            <br/>
+            <input id="review-name" type="text" name="review-name"/>
+          </div>
+          <div style="padding: 0 20px 18px 20px;">Rate this Restaurant
+            <br/>
+            <select id="review-rating" name="review-rating">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div style="padding: 0 20px 18px 20px;">Comments
+            <br/>
+            <textarea id="review-comments" false name="review-comments" rows="9"></textarea>
+          </div>
+          <p style="padding: 0 0 0 20px;"><a id="send-review" alt="Send review" onclick="sendReview()">submit</a></p>
+      </div>
     </section>
   </main>
 

@@ -1,10 +1,12 @@
 let restaurant;
+let reviews;
 var newMap;
+var dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
 /**
  * Initialize map as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {  
+document.addEventListener('DOMContentLoaded', (event) => {
   initMap();
 });
 
@@ -15,7 +17,7 @@ initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.error(error);
-    } else {      
+    } else {
       self.newMap = L.map('map', {
         center: [restaurant.latlng.lat, restaurant.latlng.lng],
         zoom: 16,
@@ -27,13 +29,18 @@ initMap = () => {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
           '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
           'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'    
+        id: 'mapbox.streets'
       }).addTo(newMap);
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
     }
   });
-}  
+  fetchReviewsFromURL((error, reviews) => {
+    if (error) { // Got an error!
+      console.error(error);
+    }
+  });
+}
 
 /**
  * Get current restaurant from page URL.
@@ -56,6 +63,27 @@ fetchRestaurantFromURL = (callback) => {
       }
       fillRestaurantHTML();
       callback(null, restaurant)
+    });
+  }
+}
+
+/**
+ * Get current reviews from page URL.
+ */
+fetchReviewsFromURL = (callback) => {
+  const id = getParameterByName('id');
+  if (!id) { // no id found in URL
+    error = 'No restaurant id in URL'
+    callback(error, null);
+  } else {
+    DBHelper.fetchReviewsById(id, (error, reviews) => {
+      self.reviews = reviews;
+      if (!reviews) {
+        console.error(error);
+        return;
+      }
+      fillReviewsHTML();
+      callback(null, reviews)
     });
   }
 }
@@ -88,8 +116,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
+
+  const favorite = document.getElementById('favorite-this');
+  if (restaurant.is_favorite === "true" || restaurant.is_favorite === true) {
+    favorite.innerHTML = 'Remove From Favorites';
+  } else {
+    favorite.innerHTML = 'Add To Favorites';
+  }
 }
 
 /**
@@ -115,7 +148,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (reviews = self.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
@@ -158,7 +191,7 @@ createReviewHTML = (review) => {
   nameBlock.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.updatedAt).toLocaleDateString('en-US', dateOptions);
   li.appendChild(date);
   date.setAttribute("id", "reviews-date");
   nameBlock.appendChild(date);
@@ -178,7 +211,7 @@ createReviewHTML = (review) => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
@@ -199,4 +232,39 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+/**
+ * Add restaurant to favorites
+ */
+function favorite() {
+  const favorite = document.getElementById('favorite-this');
+  if (self.restaurant.is_favorite === "true" || self.restaurant.is_favorite === true) {
+    favorite.innerHTML = 'Add To Favorites';
+    self.restaurant.is_favorite = false;
+    DBHelper.updateRestaurantFavorite(self.restaurant, false);
+  } else {
+    favorite.innerHTML = 'Remove From Favorites';
+    self.restaurant.is_favorite = true;
+    DBHelper.updateRestaurantFavorite(self.restaurant, true);
+  }
+}
+
+function sendReview() {
+  let data = {
+    "restaurant_id": self.restaurant.id,
+    "name": document.getElementById('review-name').value,
+    "rating": document.getElementById('review-rating').value,
+    "comments": document.getElementById('review-comments').value
+  };
+  fetch(REVIEWS_URL, {
+    body: JSON.stringify(data),
+    method: 'post'
+  }).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    location.reload();
+  }).catch(function (err) {
+    const error = (`Request failed. Returned status of ${err}`);
+  });
 }

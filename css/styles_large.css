@@ -275,7 +275,7 @@ nav h1 a {
 #reviews-container {
   padding: 30px 40px 80px;
 }
-#reviews-container h2 {
+#reviews-container h3 {
   color: #f58500;
   font-size: 24pt;
   font-weight: 300;
@@ -288,7 +288,7 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
@@ -302,4 +302,96 @@ nav h1 a {
 }
 #restaurant-hours td {
   color: #666;
+}
+#reviews-name-block {
+  background-color: #333;
+  height: 60px;
+	min-width: 100%;
+  clear: both;
+}
+#reviews-name {
+  color: #ddd;
+  font-size: 18pt;
+  font-weight: 300;
+  padding: 12px 0 0 20px;
+	float: left;
+}
+#reviews-date {
+  color: #ddd;
+  font-size: 12pt;
+  font-weight: 300;
+  padding: 20px 20px 0 0;
+	float: right;
+}
+#reviews-rating-block {
+  background-color: #f58500;
+  height: 30px;
+  width: 100px;
+  margin: 20px 0 10px 20px;
+}
+#reviews-rating {
+  color: #ddd;
+  font-size: 12pt;
+  font-weight: 300;
+  padding: 4px 0 0 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+#reviews-comments-block {
+  padding: 0 20px 0 20px;
+}
+#favorite-this {
+  padding: 5px 10px;
+  background-color: orange;
+  font-size: 12px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+#favorite-this:hover {
+  background-color: red;
+  text-decoration: none;
+}
+#favorite-this:active {
+  background-color: orange;
+}
+#review-form {
+  margin: 0;
+  padding: 0;
+}
+#review-table {
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  min-width: 100%;
+}
+#review-name {
+  min-width: 100%;
+}
+#review-rating {
+  width: 150px;
+}
+#review-comments {
+  min-width: 100%;
+}
+#send-review {
+  padding: 5px 10px;
+  background-color: orange;
+  font-size: 12px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+#send-review:hover {
+  background-color: red;
+  text-decoration: none;
+}
+#send-review:active {
+  background-color: orange;
 }

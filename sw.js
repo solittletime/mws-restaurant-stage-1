@@ -20,7 +20,6 @@ self.addEventListener('install', function(event) {
         'css/styles_small.css',
         'css/styles_medium.css',
         'css/styles_large.css',
-        'data/restaurants.json', // remove this!!!
         'img/1-270x248.jpg',
         'img/2-270x248.jpg',
         'img/3-270x248.jpg',
@@ -30,9 +29,7 @@ self.addEventListener('install', function(event) {
         'img/7-270x248.jpg',
         'img/8-270x248.jpg',
         'img/9-270x248.jpg',
-        'img/10-270x248.jpg',
-        'https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxK.woff2', // ?
-        'https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4.woff2' // ?
+        'img/10-270x248.jpg'
       ]);
     }).catch(function(error) {
       console.log(error); // "oh, no!"
@@ -57,6 +54,15 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function (event) {
   var requestUrl = new URL(event.request.url);
+  // console.log(event.request.url);
+
+  // http://localhost:1337/reviews/?restaurant_id=1
+  // http://localhost:1337/restaurants/
+  if (event.request.url.includes("/restaurants/") || event.request.url.includes("/reviews/")) {
+    //console.log('no cache');
+    event.respondWith(fetch(event.request));
+    return
+  }
 /*
   if (requestUrl.origin === location.origin) {
     if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
@@ -78,7 +84,7 @@ self.addEventListener('fetch', function (event) {
 function serveStatic(request) {
   var storageUrl = request.url;
   // http://localhost:8000/restaurant.html?id=2
-  storageUrl = storageUrl.replace(/\?id=.*$/, '');
+  storageUrl = storageUrl.replace(/\?.*$/, '');
 /*
   storageUrl = storageUrl.replace(/&token=.*$/, '');
   storageUrl = storageUrl.replace(/&callback=.*$/, '');
