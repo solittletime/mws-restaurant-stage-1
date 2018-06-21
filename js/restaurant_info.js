@@ -251,14 +251,23 @@ function favorite() {
 }
 
 function sendReview() {
-  let data = {
+  let review = {
     "restaurant_id": self.restaurant.id,
     "name": document.getElementById('review-name').value,
     "rating": document.getElementById('review-rating').value,
     "comments": document.getElementById('review-comments').value
   };
+
+  if (!navigator.onLine) {
+    localStorage.setItem('review', JSON.stringify(review));
+    document.getElementById("review-name").value = '';
+    document.getElementById("review-rating").value = '1';
+    document.getElementById("review-comments").value = '';
+    return;
+  }
+
   fetch(REVIEWS_URL, {
-    body: JSON.stringify(data),
+    body: JSON.stringify(review),
     method: 'post'
   }).then(function (response) {
     return response.json();
@@ -267,4 +276,24 @@ function sendReview() {
   }).catch(function (err) {
     const error = (`Request failed. Returned status of ${err}`);
   });
+}
+
+var myVar = setInterval(myTimer, 5000);
+
+function myTimer() {
+  if (navigator.onLine) {
+    var review = localStorage.getItem('review');
+    if (review) {
+      fetch(REVIEWS_URL, {
+        body: review,
+        method: 'post'
+      }).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        localStorage.removeItem('review');
+      }).catch(function (err) {
+        const error = (`Request failed. Returned status of ${err}`);
+      });
+    }
+  }
 }
