@@ -303,33 +303,33 @@ nav h1 a {
 #restaurant-hours td {
   color: #666;
 }
-#reviews-name-block {
+.reviews-name-block {
   background-color: #333;
   height: 60px;
 	min-width: 100%;
   clear: both;
 }
-#reviews-name {
+.reviews-name {
   color: #ddd;
   font-size: 18pt;
   font-weight: 300;
   padding: 12px 0 0 20px;
 	float: left;
 }
-#reviews-date {
+.reviews-date {
   color: #ddd;
   font-size: 12pt;
   font-weight: 300;
   padding: 20px 20px 0 0;
 	float: right;
 }
-#reviews-rating-block {
+.reviews-rating-block {
   background-color: #f58500;
   height: 30px;
   width: 100px;
   margin: 20px 0 10px 20px;
 }
-#reviews-rating {
+.reviews-rating {
   color: #ddd;
   font-size: 12pt;
   font-weight: 300;
@@ -337,7 +337,7 @@ nav h1 a {
   text-align: center;
   text-transform: uppercase;
 }
-#reviews-comments-block {
+.reviews-comments-block {
   padding: 0 20px 0 20px;
 }
 #favorite-this {

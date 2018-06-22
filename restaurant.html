@@ -47,16 +47,16 @@
     <section id="reviews-container">
       <ul id="reviews-list"></ul>
     </section>
-    <section id="review-form">
+    <section id="review-form" role="dialog">
       <div id="review-table" style="display: table;">
         <br/>
           <div style="padding: 0 20px 18px 20px;">Name
             <br/>
-            <input id="review-name" type="text" name="review-name"/>
+            <input id="review-name" type="text" name="review-name" aria-label="Review Name"/>
           </div>
           <div style="padding: 0 20px 18px 20px;">Rate this Restaurant
             <br/>
-            <select id="review-rating" name="review-rating">
+            <select id="review-rating" name="review-rating" aria-label="Review Rating">
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -66,7 +66,7 @@
           </div>
           <div style="padding: 0 20px 18px 20px;">Comments
             <br/>
-            <textarea id="review-comments" false name="review-comments" rows="9"></textarea>
+            <textarea id="review-comments" false name="review-comments" rows="9" aria-label="Review Comments"></textarea>
           </div>
           <p style="padding: 0 0 0 20px;"><a id="send-review" alt="Send review" onclick="sendReview()">submit</a></p>
       </div>

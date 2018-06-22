@@ -164,7 +164,11 @@ fillReviewsHTML = (reviews = self.reviews) => {
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
-  container.appendChild(ul);
+
+  var review = localStorage.getItem('review');
+  if (review) {
+    ul.appendChild(createReviewHTML(JSON.parse(review)));
+  }
 }
 
 /**
@@ -174,31 +178,31 @@ createReviewHTML = (review) => {
   const li = document.createElement('li');
 
   const nameBlock = document.createElement('div');
-  nameBlock.setAttribute("id", "reviews-name-block");
+  nameBlock.classList.add("reviews-name-block");
   li.appendChild(nameBlock);
 
   const ratingBlock = document.createElement('div');
-  ratingBlock.setAttribute("id", "reviews-rating-block");
+  ratingBlock.classList.add("reviews-rating-block");
   li.appendChild(ratingBlock);
 
   const commentsBlock = document.createElement('div');
-  commentsBlock.setAttribute("id", "reviews-comments-block");
+  commentsBlock.classList.add("reviews-comments-block");
   li.appendChild(commentsBlock);
 
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  name.setAttribute("id", "reviews-name");
+  name.classList.add("reviews-name");
   nameBlock.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = new Date(review.updatedAt).toLocaleDateString('en-US', dateOptions);
-  li.appendChild(date);
-  date.setAttribute("id", "reviews-date");
+  date.classList.add("reviews-date");
   nameBlock.appendChild(date);
+  li.appendChild(date);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
-  rating.setAttribute("id", "reviews-rating");
+  rating.classList.add("reviews-rating");
   ratingBlock.appendChild(rating);
 
   const comments = document.createElement('p');
@@ -255,14 +259,22 @@ function sendReview() {
     "restaurant_id": self.restaurant.id,
     "name": document.getElementById('review-name').value,
     "rating": document.getElementById('review-rating').value,
-    "comments": document.getElementById('review-comments').value
+    "comments": document.getElementById('review-comments').value,
+    "updatedAt": new Date()
   };
+
+  // let reviews = [review];
+  // DBHelper.storeReviews(reviews);
+
+  const ul = document.getElementById('reviews-list');
+  ul.appendChild(createReviewHTML(review));
+
+  document.getElementById("review-name").value = '';
+  document.getElementById("review-rating").value = '1';
+  document.getElementById("review-comments").value = '';
 
   if (!navigator.onLine) {
     localStorage.setItem('review', JSON.stringify(review));
-    document.getElementById("review-name").value = '';
-    document.getElementById("review-rating").value = '1';
-    document.getElementById("review-comments").value = '';
     return;
   }
 
@@ -278,7 +290,7 @@ function sendReview() {
   });
 }
 
-var myVar = setInterval(myTimer, 5000);
+var myVar = setInterval(myTimer, 1000);
 
 function myTimer() {
   if (navigator.onLine) {
