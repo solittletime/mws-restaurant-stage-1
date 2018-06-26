@@ -59,8 +59,9 @@ self.addEventListener('fetch', function (event) {
   // http://localhost:1337/reviews/?restaurant_id=1
   // http://localhost:1337/restaurants/
   if (event.request.url.includes("/restaurants/") || event.request.url.includes("/reviews/")) {
-    //console.log('no cache');
-    event.respondWith(fetch(event.request));
+    console.log(event.request.url);
+    // console.log('no cache');
+    event.respondWith(fetch(event.request, {cache: "no-store"}));
     return
   }
 /*

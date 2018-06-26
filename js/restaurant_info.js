@@ -165,9 +165,12 @@ fillReviewsHTML = (reviews = self.reviews) => {
     ul.appendChild(createReviewHTML(review));
   });
 
-  var review = localStorage.getItem('review');
-  if (review) {
-    ul.appendChild(createReviewHTML(JSON.parse(review)));
+  var store = localStorage.getItem('review');
+  if (store) {
+    var arr = JSON.parse(store);
+    for (var i = 0, len = arr.length; i < len; i++) {
+      ul.appendChild(createReviewHTML(arr[i]));
+    }
   }
 }
 
@@ -263,9 +266,6 @@ function sendReview() {
     "updatedAt": new Date()
   };
 
-  // let reviews = [review];
-  // DBHelper.storeReviews(reviews);
-
   const ul = document.getElementById('reviews-list');
   ul.appendChild(createReviewHTML(review));
 
@@ -274,7 +274,15 @@ function sendReview() {
   document.getElementById("review-comments").value = '';
 
   if (!navigator.onLine) {
-    localStorage.setItem('review', JSON.stringify(review));
+    var store = localStorage.getItem('review');
+    let arr;
+    if (store) {
+      arr = JSON.parse(store);
+      arr.push(review);
+    }  else {
+      arr = [review];
+    }
+    localStorage.setItem('review', JSON.stringify(arr));
     return;
   }
 
@@ -290,19 +298,27 @@ function sendReview() {
   });
 }
 
-var myVar = setInterval(myTimer, 1000);
+var myVar = setInterval(myTimer, 2000);
 
 function myTimer() {
   if (navigator.onLine) {
-    var review = localStorage.getItem('review');
-    if (review) {
+    var store = localStorage.getItem('review');
+    if (store) {
+      var arr = JSON.parse(store);
+      var review = arr.shift();
       fetch(REVIEWS_URL, {
-        body: review,
+        body: JSON.stringify(review),
         method: 'post'
       }).then(function (response) {
         return response.json();
       }).then(function (json) {
-        localStorage.removeItem('review');
+        let reviews = [json];
+        DBHelper.storeReviews(reviews);
+        if (arr.length === 0) {
+          localStorage.removeItem('review');
+        } else {
+          localStorage.setItem('review', JSON.stringify(arr));
+        }
       }).catch(function (err) {
         const error = (`Request failed. Returned status of ${err}`);
       });
